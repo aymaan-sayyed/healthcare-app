@@ -13,18 +13,26 @@ function App() {
     setSubmitted(true);
   };
 
-  // 🔥 Improved AI responses
+  const resetForm = () => {
+    setName("");
+    setIssue("");
+    setSubmitted(false);
+  };
+
+  // 🔥 Improved chatbot
   const getBotReply = (msg) => {
     msg = msg.toLowerCase();
 
-    if (msg.includes("fever")) return "Drink fluids, take rest, and monitor temperature.";
+    if (msg.includes("fever")) return "Drink fluids, rest, and monitor temperature.";
     if (msg.includes("headache")) return "Try hydration and rest. Avoid screen strain.";
     if (msg.includes("covid")) return "Isolate and get tested. Wear a mask.";
-    if (msg.includes("cold")) return "Stay warm and drink hot fluids.";
-    if (msg.includes("emergency")) return "Call emergency services immediately!";
-    if (msg.includes("help")) return "A volunteer will contact you soon.";
+    if (msg.includes("cough")) return "Drink warm fluids and monitor symptoms.";
+    if (msg.includes("pain")) return "Please describe the type and location of pain.";
+    if (msg.includes("stomach")) return "Avoid heavy food and stay hydrated.";
+    if (msg.includes("injury")) return "Apply first aid and seek medical help if serious.";
+    if (msg.includes("help")) return "A volunteer will contact you shortly.";
 
-    return "Please consult a doctor or provide more details.";
+    return "Can you describe your symptoms more clearly?";
   };
 
   const sendMessage = (customMsg) => {
@@ -38,7 +46,7 @@ function App() {
 
   return (
     <div style={{ fontFamily: "Arial" }}>
-
+      
       {/* HEADER */}
       <div style={{
         background: "#007bff",
@@ -50,13 +58,16 @@ function App() {
         Jarurat Care - Healthcare Support
       </div>
 
+      <p style={{ textAlign: "center", marginTop: "10px" }}>
+        Built for NGOs to quickly support patients and manage requests efficiently.
+      </p>
+
       {/* MAIN */}
       <div style={{
         display: "flex",
         justifyContent: "center",
         padding: "20px"
       }}>
-
         <div style={{
           width: "100%",
           maxWidth: "900px",
@@ -64,7 +75,7 @@ function App() {
           gap: "20px"
         }}>
 
-          {/* LEFT - FORM */}
+          {/* FORM */}
           <div style={{
             flex: 1,
             background: "white",
@@ -72,7 +83,6 @@ function App() {
             borderRadius: "10px",
             boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
           }}>
-
             <h3>Request Support</h3>
 
             {/* Tabs */}
@@ -110,11 +120,16 @@ function App() {
                 </button>
               </form>
             ) : (
-              <p style={{ color: "green" }}>✅ Submitted successfully</p>
+              <div>
+                <p style={{ color: "green" }}>✅ Submitted successfully</p>
+                <button onClick={resetForm} style={{ padding: "10px" }}>
+                  Submit another request
+                </button>
+              </div>
             )}
           </div>
 
-          {/* RIGHT - CHAT */}
+          {/* CHAT */}
           <div style={{
             flex: 1,
             background: "white",
@@ -122,7 +137,6 @@ function App() {
             borderRadius: "10px",
             boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
           }}>
-
             <h3>AI Assistant</h3>
 
             {/* QUICK BUTTONS */}
@@ -150,12 +164,16 @@ function App() {
               ))}
             </div>
 
+            {/* INPUT */}
             <div style={{ display: "flex" }}>
               <input
                 type="text"
                 placeholder="Ask something..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") sendMessage();
+                }}
                 style={{ flex: 1, padding: "10px" }}
               />
               <button onClick={() => sendMessage()} style={{ padding: "10px", background: "#007bff", color: "white" }}>
@@ -167,7 +185,6 @@ function App() {
 
         </div>
       </div>
-
     </div>
   );
 }
